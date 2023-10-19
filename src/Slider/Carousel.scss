@@ -1,0 +1,52 @@
+.slick-slide img {
+    margin-right: 16px;
+    padding-right: 12px;
+    border-radius: 24px;
+    object-fit:cover;
+    width: 267px;
+    height: 200px;
+}
+
+.slick-list {
+    max-width: 1075px;
+}
+
+.slick-dots li {
+    margin-right: 12px;
+}    
+.slick-dots li button::before {
+    content: url('https://svgshare.com/i/yYq.svg');
+}
+
+.slick-dots .slick-active button::before {
+    content: url('https://svgshare.com/i/y_Z.svg');
+}
+
+.slick-prev, .slick-next {
+    margin-left: 8px;
+    width: 64px;
+    height: 48px;
+    justify-content: center;
+    border-radius: 8px;
+    background: var(--system-colors-element, #EFEFEF);
+    position: absolute;
+    top: -35px;
+    align-items: center;
+    display: flex !important;
+}
+
+.slick-prev {
+    left: 930px;
+}
+
+.slick-next {
+    right: 0px ;
+}
+
+.slick-prev::before {
+    content: url('https://svgshare.com/i/yKX.svg');
+}
+
+.slick-next::before {
+    content: url('https://svgshare.com/i/yL3.svg');
+}

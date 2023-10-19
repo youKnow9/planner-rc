@@ -1,0 +1,89 @@
+.rbc-calendar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;
+  // margin: 30px auto 88px auto;
+  height: 80vh;
+    @media (min-width: 1000px) {
+      // max-width: 1900px;
+    }
+}
+
+.rbc-month-view {
+  &>:div {
+    height: 128px;
+  }
+}
+.rbc-month-view > .rbc-month-row {
+  border: 1px solid var(--Gray, #B3B3BC);
+  
+    .rbc-header {
+      border: none;
+    }
+}
+
+[role="columnheader"]{
+  display: inline-block;
+  text-align: right;
+  width: 100%;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.rbc-month-view > :nth-child(2) {
+  border-radius: 24px 24px 0 0;
+  border: 1px solid #ddd;
+  overflow: hidden;
+}
+
+.rbc-month-view > :last-child {
+  .rbc-row-bg {
+    border-radius: 0 0 0px 24px;
+    border: 1px solid #ddd;
+    overflow: hidden;
+  }
+}
+.rbc-month-header, .rbc-month-view {
+  border: none ;
+  .rbc-header + .rbc-header, .rbc-header {
+    border: none;
+}
+}
+.rbc-toolbar {
+  display: none;
+}
+
+.rbc-event {
+  &.rbc-selected {
+    background: var(--system-colors-element, #EFEFEF);
+  }
+  border-radius: 8px;
+  background: var(--system-colors-element, #EFEFEF);
+  margin-left: 32px;
+  width: auto;
+    .rbc-event-content {
+      color: var(--main-colors-black, #0D0C0C);
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 28px;
+      letter-spacing: -0.4px;
+    }
+}
+
+// .rbc-month-view .rbc-row-content .rbc-row {
+//   height: 50px; // Здесь вы можете задать нужную высоту строки
+// }
+
+.past-event {
+  background-color: var(--system-colors-element, #EFEFEF);
+  .rbc-event-content {
+    font-size: 20px;    
+    color: var(--Gray, #B3B3BC);
+  }
+}
+
+.rbc-today {
+  background-color: var(--main-colors-white, #FFF);
+}

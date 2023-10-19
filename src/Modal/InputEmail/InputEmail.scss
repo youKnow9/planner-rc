@@ -1,0 +1,66 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+  
+.container {
+    position: relative;
+    max-width: 346px;
+    span {
+        color: var(--Gray, #B3B3BC);
+        position: absolute;
+        font-size: 14px;
+        top: 13px;
+        left: 12px;
+        pointer-events: none;
+        z-index: 200;
+    }
+    #username {
+        margin-bottom: 28px;
+    }
+}
+
+input {
+    padding: 30px 16px 9px 11px;
+    width: 346px;
+    border: none;
+    border: 1px solid var(--main-colors-black, #0D0C0C);
+    border-radius: 12px;
+    background-color: #ffffff00;
+}
+
+input:focus {
+    border: none;
+    outline: none;
+    border: 1px solid var(--main-colors-black, #0D0C0C); 
+}
+
+.icon-close {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.error-message-container {
+    min-height: 19px;
+}
+
+.error-message {
+    color: var(--main-colors-accent, #F51B1B);
+    font-size: 14px;
+    height: 20px;
+}
+
+.eye-icon-wrapper {
+    position: absolute;
+    top: -46px;
+    left: 300px;
+    
+}
+
+.MuiButtonBase-root {
+    padding: 0px !important;
+}
