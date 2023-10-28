@@ -180,7 +180,7 @@ function App() {
           end = new Date (end.setHours(start.getHours() + 1));
           if (el.photos !== null) {
             el.photos.forEach((elem) => {
-              elem.src = "https://planner.rdclr.ru" + elem.url;
+              elem.src = "http://localhost:1337" + elem.url;
             });
           };
           return {

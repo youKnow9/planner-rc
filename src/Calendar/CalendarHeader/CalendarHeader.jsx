@@ -7,7 +7,8 @@ const CalendarHeader = ({ date, label, onPrevClick, onNextClick, onCustomButtonC
     <div className='calendar-header'>
       <div className='header-content'>
         <div>
-          <img className='logo' src='https://svgshare.com/i/yJX.svg' alt='logo' /><span className='name-rc'>planner <span>event</span></span>
+          {/* <img className='logo' src='https://svgshare.com/i/yJX.svg' alt='logo' /> */}
+          <span className='name-rc'>planner <span>event</span></span>
         </div>
         <div className='navigation-buttons'>
           <span className='title'>{label}</span>

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const api = axios.create({
-    baseURL: 'https://planner.rdclr.ru/api/',
+    baseURL: 'http://localhost:1337/api/',
 });
   
 export default api;
