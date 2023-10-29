@@ -13,7 +13,7 @@ const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, onCustomButtonClick
     <div className='calendar-header'>
       <div className='header-content'>
         <div>
-          <img className='logo' src='https://svgshare.com/i/yJX.svg' alt='logo' /><span className='name-rc'>planner <span>event</span></span>
+          <span className='name-rc'>planner <span>event</span></span>
         </div>
         <div className='navi-wrapper'>
             <div className='navigation-bt'>

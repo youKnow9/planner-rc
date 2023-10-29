@@ -13,7 +13,7 @@ const CustomToolbarNoAuth = ({ date, label, onPrevClick, onNextClick, handleLogi
       <div className='calendar-header'>
         <div className='header-content'>
           <div>
-            <img className='logo' src='https://svgshare.com/i/yJX.svg' alt='logo' /><span className='name-rc'>planner <span>event</span></span>
+            <span className='name-rc'>planner <span>event</span></span>
           </div>
           <div className='navigation-bt'>
             <span className='current-month'>{currentMonth}</span>
