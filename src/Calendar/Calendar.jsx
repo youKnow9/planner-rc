@@ -9,7 +9,7 @@ import CreateEventModal from "../CreateEventModal/CreateEventModal";
 import "moment/locale/ru";
 import CustomDateHeader from "./CustomDateHeader/CustomDateHeader";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import api from "../shared/Api/init";
+import api from "../../shared/Api/init";
 import ModalEvent from "../Modal/ModalEvent";
 import ModalLogin from "../Modal/ModalLogin";
 import ModalRegisterUser from "../Modal/ModalRegisterUser";
@@ -57,7 +57,7 @@ function App() {
     const jwt = getJWTFromLocalStorage();
     if (jwt) {
       setIsAuthenticated(true);
-      // localStorage.removeItem('jwt');
+      localStorage.removeItem('jwt');
     }
   }, []);
 

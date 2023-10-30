@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
-import api from "../shared/Api/init";
+import api from "../../shared/Api/init";
 import ModalSuccess from "./ModalSuccess";
 import ModalRegisterUser from "./ModalRegisterUser";
 import "./ModalLogin.scss";
@@ -23,9 +23,11 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
       await api.get(`/taken-emails/${email}`);
       return true;
     } catch (error) {
-      if (error.response && error.response.status === 404) {
+      if (error.response ) {
+        
         return false;
       } else {
+        
         throw error;
       }
     }
@@ -36,7 +38,6 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
       const isEmailTaken = await checkExistsEmail(email);
       if (isEmailTaken) {
         setShowSuccessModal(true);
-        // onClose(); // Закрыть ModalLogin
       } else {
         setShowRegisterModal(true);
       }
@@ -44,12 +45,12 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
       setError(true);
     }
   };
-
+  
   const handleLoginClose = () => {
     setShowSuccessModal(false); // Close ModalSuccess
     onClose(); // Close ModalLogin
   };
-
+  
   return (
     <Modal open={open} onClose={onClose}>
       <div className="wrapper-login">
@@ -83,7 +84,11 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
         <ModalRegisterUser
           open={showRegisterModal}
           email={email}
-          onClose={() => setShowRegisterModal(false)}
+          onClose={() => {
+            setShowRegisterModal(false);
+            onClose(); // Close ModalLogin
+          }}
+          setAuthenticated={setAuthenticated}
         />
       </div>
     </Modal>

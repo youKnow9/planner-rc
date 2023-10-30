@@ -7,7 +7,7 @@ import ru from 'date-fns/locale/ru';
 import './CreateEventModal.scss';
 import Modal from '@mui/material/Modal';
 import InputMask from "react-input-mask";
-import api from '../shared/Api/init';
+import api from "../../shared/Api/init";
 
 const CreateEventModal = ({ open, onClose, onSave, userList }) => {
   const [title, setTitle] = useState('');

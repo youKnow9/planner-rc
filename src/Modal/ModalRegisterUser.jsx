@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
-import api from "../shared/Api/init";
+import api from "../../shared/Api/init";
 import "./ModalRegisterUser.scss";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Input from "./InputEmail/InputEmail";
-// import ModalSuccess from './ModalSuccess';
 
 const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
   const [username, setUsername] = useState("");
@@ -13,7 +12,6 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
   const [passwordsMatch, setPasswordsMatch] = useState(true);
-  // const handleLogin = useUserLogin();
 
   const passwordRules = `В пароле используйте от 8 до 32 символов: строчные и прописные латинские буквы (A-z), цифры (0-9) и спец символы ( . , : ; ? ! * + % - < > @ [ ] { } / \ _ {} $ # )`;
   useEffect(() => {
@@ -42,45 +40,31 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
   };
 
   const handleRegister = async () => {
-    if (!isFormValid()) {
-      setError(true);
-      return;
+    // if (!isFormValid()) {
+    //   setError(true);
+    //   return;
+    // }
+    const handleRegister = async () => {
+      console.log("handleRegister called");
+      // ...
     }
     const userData = {
       username: username,
       email: email,
       password: password,
-    };
+    };console.log(userData)
     api
       .post(`/auth/local/register`, userData)
       .then((response) => {
         // handleLogin(email, password);
         console.log("User registered successfully:", response.data);
+        onClose();
       })
       .catch((error) => {
         console.error(error);
       });
   };
-  // const handleRegister = async () => {
-  //     if (!isFormValid()) {
-  //         return;
-  //     }
 
-  //     try {
-  //         const response = await api.post('/users', {
-  //             username,
-  //             email,
-  //             password,
-  //         });
-
-  //         if (response.status === 201) {
-  //             alert('Регистрация прошла успешно!');
-  //             onClose();
-  //         }
-  //     } catch (error) {
-  //         alert('Произошла ошибка при регистрации!');
-  //     }
-  // };
   return (
     <Modal open={open} onClose={onClose}>
       <div className="wrapper-login">
@@ -126,11 +110,7 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
             error={!passwordsMatch}
             errorMessage="Пароли не совпадают"
           />
-          <button
-            className="reg-bt"
-            onClick={handleRegister}
-            disabled={!isFormValid()}
-          >
+          <button className="reg-bt" onClick={handleRegister} >
             Зарегистрироваться
           </button>
         </div>
@@ -140,3 +120,4 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
 };
 
 export default ModalRegisterUser;
+// disabled={!isFormValid()}
