@@ -1,49 +1,45 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, momentLocalizer, dateFnsLocalizer } from 'react-big-calendar';
-import moment from 'moment';
-import CreateEventModal from '../CreateEventModal/CreateEventModal';
-import 'moment/locale/ru';
-import CustomDateHeader from './CustomDateHeader/CustomDateHeader'
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import api from '../shared/Api/init';
-import ModalEvent from '../Modal/ModalEvent';
-import ModalLogin from '../Modal/ModalLogin';
-import ModalRegisterUser from '../Modal/ModalRegisterUser';
-import CustomToolbarNoAuth from '../CustomToolbar/CustomToolbarNoAuth';
-import CustomToolbarAuth from '../CustomToolbar/CustomToolbarAuth';
-import styles from './Calendar.scss';
-
-// const formats = {
-//   dateFormat: 'DD',
-//   dayFormat: (date, culture, localizer) => localizer.format(date, 'DD', culture),
-// };
+import React, { useState, useEffect, useRef } from "react";
+import {
+  Calendar,
+  momentLocalizer,
+  dateFnsLocalizer,
+} from "react-big-calendar";
+import moment from "moment";
+import CreateEventModal from "../CreateEventModal/CreateEventModal";
+import "moment/locale/ru";
+import CustomDateHeader from "./CustomDateHeader/CustomDateHeader";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import api from "../shared/Api/init";
+import ModalEvent from "../Modal/ModalEvent";
+import ModalLogin from "../Modal/ModalLogin";
+import ModalRegisterUser from "../Modal/ModalRegisterUser";
+import CustomToolbarNoAuth from "../CustomToolbar/CustomToolbarNoAuth";
+import CustomToolbarAuth from "../CustomToolbar/CustomToolbarAuth";
+import styles from "./Calendar.scss";
 
 const messages = {
-  date: 'Дата',
-  time: 'Время',
-  event: 'Событие',
-  allDay: 'Весь день',
-  week: 'Неделя',
-  month: 'Месяц',
-  day: 'День',
-  agenda: 'Повестка дня'
+  date: "Дата",
+  time: "Время",
+  event: "Событие",
+  allDay: "Весь день",
+  week: "Неделя",
+  month: "Месяц",
+  day: "День",
+  agenda: "Повестка дня",
 };
 
 const localizer = momentLocalizer(moment);
-    moment.updateLocale('ru', {
-    week: {
+moment.updateLocale("ru", {
+  week: {
     dow: 1,
-    doy: 4
+    doy: 4,
   },
-  weekdaysMin: ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс']
+  weekdaysMin: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
 });
 
 function App() {
   const [events, setEvents] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  // const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -53,9 +49,8 @@ function App() {
   const [allUsers, setAllUsers] = useState([]);
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
 
-  
   function getJWTFromLocalStorage() {
-    return localStorage.getItem('jwt');
+    return localStorage.getItem("jwt");
   }
 
   useEffect(() => {
@@ -67,23 +62,25 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if(isAuthenticated) {
-      api.get('/users', {
-        headers: { Authorization: `Bearer ${getJWTFromLocalStorage()}` }
-      }).then(response => {
-        setAllUsers(response.data);
-      }).catch(error => {
-        console.error(error);
-      });
+    if (isAuthenticated) {
+      api
+        .get("/users", {
+          headers: { Authorization: `Bearer ${getJWTFromLocalStorage()}` },
+        })
+        .then((response) => {
+          setAllUsers(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   }, [isAuthenticated]);
 
   const openCreateEventModal = () => {
     if (isAuthenticated) {
       setShowCreateEventModal(true);
-    } 
-    else {
-      console.log('Пользователь не авторизован');
+    } else {
+      console.log("Пользователь не авторизован");
     }
   };
 
@@ -100,11 +97,11 @@ function App() {
   };
 
   const handlePrevClick = () => {
-    setCurrentDate(moment(currentDate).subtract(1, 'M').toDate());
+    setCurrentDate(moment(currentDate).subtract(1, "M").toDate());
   };
 
   const handleNextClick = () => {
-    setCurrentDate(moment(currentDate).add(1, 'M').toDate());
+    setCurrentDate(moment(currentDate).add(1, "M").toDate());
   };
 
   const handleModalEventNext = () => {
@@ -124,17 +121,11 @@ function App() {
   const handleModalRegisterClose = () => {
     setModalRegisterOpen(false);
   };
-  
+
   const handleEventClick = async (event) => {
     setSelectedEvent(event);
     setModalEventOpen(true);
   };
-
-  // const handleCustomButtonClick = (e) => {
-  //   if (e.target.classList.contains('custom-button')) {
-  //     setShowModal(true);
-  //   }
-  // };
 
   const closeCreateEventModal = () => {
     setShowCreateEventModal(false);
@@ -142,8 +133,8 @@ function App() {
 
   const handleSaveEvent = async (eventData) => {
     try {
-      await api.post('events', eventData);
-      setEvents(prevEvents => [...prevEvents, eventData]);
+      await api.post("events", eventData);
+      setEvents((prevEvents) => [...prevEvents, eventData]);
       closeCreateEventModal();
     } catch (error) {
       console.error(error);
@@ -154,7 +145,7 @@ function App() {
     const currentDate = new Date();
     if (start < currentDate) {
       return {
-        className: 'past-event'
+        className: "past-event",
       };
     }
     return {};
@@ -162,7 +153,7 @@ function App() {
 
   const dayStyleGetter = (date, now) => {
     const style = {
-      height: '128px',
+      height: "128px",
     };
     return {
       style,
@@ -171,44 +162,55 @@ function App() {
 
   useEffect(() => {
     const fetchDataAndHandleError = async () => {
-    try {
-        const response = await api.get('events?populate=*&');
+      try {
+        const response = await api.get("events?populate=*&");
         const data = response.data.data;
         const formattedEvents = data.map(async (el, i) => {
           const start = new Date(el.dateStart);
           let end = new Date(start);
-          end = new Date (end.setHours(start.getHours() + 1));
+          end = new Date(end.setHours(start.getHours() + 1));
           if (el.photos !== null) {
             el.photos.forEach((elem) => {
               elem.src = "http://localhost:1337" + elem.url;
             });
-          };
+          }
           return {
             title: el.title,
             start: start,
             end: end,
             discription: el.description,
             photos: el.photos,
-            location: el.location, 
-            participants: el.participants
+            location: el.location,
+            participants: el.participants,
           };
         });
         const resolvedEvents = await Promise.all(formattedEvents);
         setEvents(resolvedEvents);
-        } catch (error) {
-          console.error(error);
-        }
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchDataAndHandleError();
-}, [showCreateEventModal]);
+  }, [showCreateEventModal]);
 
   return (
     <div className={styles.appContainer}>
-      {isAuthenticated ?
-        (<CustomToolbarAuth date={currentDate} onPrevClick={handlePrevClick} onNextClick={handleNextClick} users={allUsers} />)
-        :
-        (<CustomToolbarNoAuth date={currentDate} onPrevClick={handlePrevClick} onNextClick={handleNextClick} onLoginClick={handleLoginClick}/>)      }
+      {isAuthenticated ? (
+        <CustomToolbarAuth
+          date={currentDate}
+          onPrevClick={handlePrevClick}
+          onNextClick={handleNextClick}
+          users={allUsers}
+        />
+      ) : (
+        <CustomToolbarNoAuth
+          date={currentDate}
+          onPrevClick={handlePrevClick}
+          onNextClick={handleNextClick}
+          onLoginClick={handleLoginClick}
+        />
+      )}
       <Calendar
         localizer={localizer}
         events={events}
@@ -225,34 +227,34 @@ function App() {
         }}
         components={{
           month: {
-            dateHeader: CustomDateHeader
-          }
+            dateHeader: CustomDateHeader,
+          },
         }}
         onNavigate={(newDate) => {
           setCurrentDate(newDate);
         }}
       />
-      <CreateEventModal 
-        open={showCreateEventModal} 
-        onClose={closeCreateEventModal} 
-        onSave={handleSaveEvent} 
+      <CreateEventModal
+        open={showCreateEventModal}
+        onClose={closeCreateEventModal}
+        onSave={handleSaveEvent}
         users={allUsers}
       />
-      <ModalEvent 
-        event={selectedEvent}  
-        open={modalEventOpen} 
-        onClose={handleModalEventClose} 
-        onNext={handleModalEventNext} 
+      <ModalEvent
+        event={selectedEvent}
+        open={modalEventOpen}
+        onClose={handleModalEventClose}
+        onNext={handleModalEventNext}
       />
-      <ModalLogin 
-        open={modalLoginOpen} 
-        onClose={handleModalLoginClose} 
-        onNext={handleModalLoginNext} 
-        onAuthenticationSuccess={setAuthenticated} 
+      <ModalLogin
+        open={modalLoginOpen}
+        onClose={handleModalLoginClose}
+        onNext={handleModalLoginNext}
+        setAuthenticated={setIsAuthenticated}
       />
-      <ModalRegisterUser 
-        open={modalRegisterOpen} 
-        onClose={handleModalRegisterClose} 
+      <ModalRegisterUser
+        open={modalRegisterOpen}
+        onClose={handleModalRegisterClose}
       />
     </div>
   );

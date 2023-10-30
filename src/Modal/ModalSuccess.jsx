@@ -4,12 +4,12 @@ import api from '../shared/Api/init';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Input from './InputEmail/InputEmail';
 
-const ModalSuccess = ({ isOpen, onClose, email }) => {
-    const [username, setUsername] = useState('');
+const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }) => {
+    // const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPasswords, setShowPasswords] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [error, setError] = useState(false);
+    // const [error, setError] = useState(false);
     const [passwordsMatch, setPasswordsMatch] = useState(true);
 
     useEffect(() => {
@@ -22,21 +22,25 @@ const ModalSuccess = ({ isOpen, onClose, email }) => {
     };
 
     const handleLogin = async (e) => {
-      e.preventDefault();
       try {
-        const responseLogin = await api.post('/auth/local', { 
-          identifier: email, 
-          password 
+        const responseLogin = await api.post('/auth/local', {
+          identifier: email,
+          password,
         });
-    
+  
         if (responseLogin.status === 200) {
           const jwt = responseLogin.data.jwt;
           localStorage.setItem('jwt', jwt);
+          // Вызовите функцию обновления состояния входа из App
+          setAuthenticated(true);
+          // Закройте модальное окно и другие действия
+          onClose(); // Закрыть ModalSuccess
+          onLoginClose(); // Закрыть ModalLogin
         }
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
 
     return (
@@ -53,7 +57,11 @@ const ModalSuccess = ({ isOpen, onClose, email }) => {
               onIconClick={togglePasswordVisibility}
               passwordVisibility={showPasswords}
             />
-            <button className='next-bt' onClick={handleLogin}>Далее</button>
+<button className='next-bt' onClick={() => { 
+  handleLogin(); 
+  onClose(); // Закрыть ModalSuccess
+  onLoginClose(); // Закрыть ModalLogin
+}}>Войти</button>
           </div>
         </Modal>
     );
