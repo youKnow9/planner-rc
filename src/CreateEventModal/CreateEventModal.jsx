@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Input, Upload, Select } from 'antd';
+import { Button, Input, Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,6 +8,7 @@ import './CreateEventModal.scss';
 import Modal from '@mui/material/Modal';
 import InputMask from "react-input-mask";
 import api from "../../shared/Api/init";
+import Select from 'react-select';
 
 const CreateEventModal = ({ open, onClose, onSave, userList }) => {
   const [title, setTitle] = useState('');
@@ -38,7 +39,8 @@ const CreateEventModal = ({ open, onClose, onSave, userList }) => {
   startTime.trim() !== "" &&
   location.trim() !== "";
   
-
+  const users = userList ? userList.map(user => ({ value: user.id, label: user.username })) : []
+  
   function getJWTFromLocalStorage() {
     return localStorage.getItem('jwt');
   }
@@ -128,7 +130,7 @@ const CreateEventModal = ({ open, onClose, onSave, userList }) => {
       await api.post('/events', event, {
         headers: {
           'Authorization': `Bearer ${jwt}`,
-          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/json'
         }
       });
   
@@ -160,11 +162,11 @@ const CreateEventModal = ({ open, onClose, onSave, userList }) => {
                 value={description}
               />
               <Select
-                mode="multiple"
+                isMulti
                 placeholder="Участники"
-                value={participants.map(participant => participant.username)}
+                value={participants}
                 onChange={(selected) => setParticipants(selected)}
-                // options={userList.map(user => ({label: user.username, value: user.id}))}
+                options={users}
               />
               <Upload.Dragger {...uploadProps}>
               <p className="ant-upload-icon">

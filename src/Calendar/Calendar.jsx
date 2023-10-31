@@ -57,7 +57,7 @@ function App() {
     const jwt = getJWTFromLocalStorage();
     if (jwt) {
       setIsAuthenticated(true);
-      localStorage.removeItem('jwt');
+      // localStorage.removeItem('jwt');
     }
   }, []);
 
@@ -163,7 +163,7 @@ function App() {
   useEffect(() => {
     const fetchDataAndHandleError = async () => {
       try {
-        const response = await api.get("events?populate=*&");
+        const response = await api.get("events?populate=*");
         const data = response.data.data;
         const formattedEvents = data.map(async (el, i) => {
           const start = new Date(el.dateStart);
@@ -201,14 +201,14 @@ function App() {
           date={currentDate}
           onPrevClick={handlePrevClick}
           onNextClick={handleNextClick}
-          users={allUsers}
+          allUsers={allUsers}
         />
       ) : (
         <CustomToolbarNoAuth
           date={currentDate}
           onPrevClick={handlePrevClick}
           onNextClick={handleNextClick}
-          onLoginClick={handleLoginClick}
+          onNext={handleModalEventNext}
         />
       )}
       <Calendar
@@ -238,7 +238,7 @@ function App() {
         open={showCreateEventModal}
         onClose={closeCreateEventModal}
         onSave={handleSaveEvent}
-        users={allUsers}
+        userList={allUsers}
       />
       <ModalEvent
         event={selectedEvent}
@@ -255,6 +255,7 @@ function App() {
       <ModalRegisterUser
         open={modalRegisterOpen}
         onClose={handleModalRegisterClose}
+        setAuthenticated={setIsAuthenticated}
       />
     </div>
   );

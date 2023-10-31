@@ -3,15 +3,8 @@ import "./CalendarHeader.scss";
 import moment from "moment";
 import CreateEventModal from "../CreateEventModal/CreateEventModal";
 
-const CustomToolbarAuth = ({
-  date,
-  onPrevClick,
-  onNextClick,
-  onCustomButtonClick,
-  allUsers,
-}) => {
+const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, allUsers }) => {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
-
   const currentDate = moment(date);
   const currentMonth = currentDate.format("MMMM");
 
@@ -42,7 +35,6 @@ const CustomToolbarAuth = ({
             >
               <img src="https://svgshare.com/i/yXh.svg" alt="add-event" />
             </button>
-            {/* <button className='avatar' onClick={onCustomButtonClick}></button> */}
           </div>
         </div>
       </div>

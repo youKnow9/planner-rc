@@ -5,7 +5,7 @@ import "./ModalRegisterUser.scss";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import Input from "./InputEmail/InputEmail";
 
-const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
+const ModalRegisterUser = ({ email, open, onClose, handleLogin, setAuthenticated }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPasswords, setShowPasswords] = useState(false);
@@ -44,10 +44,6 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
     //   setError(true);
     //   return;
     // }
-    const handleRegister = async () => {
-      console.log("handleRegister called");
-      // ...
-    }
     const userData = {
       username: username,
       email: email,
@@ -56,9 +52,9 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin }) => {
     api
       .post(`/auth/local/register`, userData)
       .then((response) => {
-        // handleLogin(email, password);
-        console.log("User registered successfully:", response.data);
         onClose();
+        setAuthenticated(true);
+        console.log("User registered successfully:", response.data);
       })
       .catch((error) => {
         console.error(error);

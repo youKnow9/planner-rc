@@ -3,7 +3,7 @@ import './CalendarHeader.scss';
 import moment from 'moment';
 import Modal from '@mui/material/Modal';
 
-const CustomToolbarNoAuth = ({ date, label, onPrevClick, onNextClick, handleLoginClick  }) => {
+const CustomToolbarNoAuth = ({ date, allUsers, onPrevClick, onNextClick, onNext  }) => {
     const [showLoginModal, setShowLoginModal] = React.useState(false);
   
     const currentDate = moment(date);
@@ -21,7 +21,7 @@ const CustomToolbarNoAuth = ({ date, label, onPrevClick, onNextClick, handleLogi
                 <button onClick={onPrevClick}><img src="https://svgshare.com/i/yKX.svg" alt="prev" /></button> {/* Предыдущий месяц */}
                 <button onClick={onNextClick}><img src="https://svgshare.com/i/yL3.svg" alt="next" /></button> {/* Следующий месяц */}
             </div>
-            <button className='custom-button' onClick={handleLoginClick}>Войти</button>
+            <button className='custom-button' onClick={onNext}>Войти</button>
           </div>
           
         </div>

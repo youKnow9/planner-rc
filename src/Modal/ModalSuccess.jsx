@@ -31,11 +31,9 @@ const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }
         if (responseLogin.status === 200) {
           const jwt = responseLogin.data.jwt;
           localStorage.setItem('jwt', jwt);
-          // Вызовите функцию обновления состояния входа из App
           setAuthenticated(true);
-          // Закройте модальное окно и другие действия
-          onClose(); // Закрыть ModalSuccess
-          onLoginClose(); // Закрыть ModalLogin
+          onClose();
+          onLoginClose();
         }
       } catch (error) {
         console.error(error);
@@ -43,28 +41,35 @@ const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }
     };
 
 
-    return (
-        <Modal open={isOpen} onClose={onClose}>
-          <div className='wrapper-login'>
-            <h3>Вход</h3>
-            <Input 
-              type="password"
-              id="password"
-              placeholder="Пароль"
-              value={password}
-              onChange={(e) => setPassword(e)}
-              IconComponent={showPasswords ? Visibility : VisibilityOff}
-              onIconClick={togglePasswordVisibility}
-              passwordVisibility={showPasswords}
-            />
-<button className='next-bt' onClick={() => { 
-  handleLogin(); 
-  onClose(); // Закрыть ModalSuccess
-  onLoginClose(); // Закрыть ModalLogin
-}}>Войти</button>
-          </div>
-        </Modal>
-    );
+  return (
+    <Modal open={isOpen} onClose={onClose}>
+      <div className='wrapper-login'>
+        <div className="close">
+          <img
+            src="https://svgshare.com/i/yFX.svg"
+            alt="close"
+            onClick={onClose}
+          />
+        </div>
+        <h3>Вход</h3>
+        <Input 
+          type="password"
+          id="password"
+          placeholder="Пароль"
+          value={password}
+          onChange={(e) => setPassword(e)}
+          IconComponent={showPasswords ? Visibility : VisibilityOff}
+          onIconClick={togglePasswordVisibility}
+          passwordVisibility={showPasswords}
+        />
+        <button className='next-bt' onClick={() => { 
+          handleLogin(); 
+          onClose();
+          onLoginClose();
+        }}>Войти</button>
+      </div>
+    </Modal>
+  );
 };
 
 export default ModalSuccess;
