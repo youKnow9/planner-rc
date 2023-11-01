@@ -5,36 +5,43 @@ import {
   dateFnsLocalizer,
 } from "react-big-calendar";
 import moment from "moment";
-import CreateEventModal from "../CreateEventModal/CreateEventModal";
+import CreateEventModal from "../Modal/CreateEventModal/CreateEventModal";
 import "moment/locale/ru";
 import CustomDateHeader from "./CustomDateHeader/CustomDateHeader";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import api from "../../shared/Api/init";
-import ModalEvent from "../Modal/ModalEvent";
-import ModalLogin from "../Modal/ModalLogin";
-import ModalRegisterUser from "../Modal/ModalRegisterUser";
-import CustomToolbarNoAuth from "../CustomToolbar/CustomToolbarNoAuth";
-import CustomToolbarAuth from "../CustomToolbar/CustomToolbarAuth";
+import ModalEvent from "../Modal/ModalEvent/ModalEvent";
+import ModalLogin from "../Modal/ModalLogin/ModalLogin";
+import ModalRegisterUser from "../Modal/ModalRegisterUser/ModalRegisterUser";
+import CustomToolbarNoAuth from "../Calendar/CustomToolbar/CustomToolbarNoAuth";
+import CustomToolbarAuth from "../Calendar/CustomToolbar/CustomToolbarAuth";
 import styles from "./Calendar.scss";
+import { format } from "date-fns";
 
-const messages = {
-  date: "Дата",
-  time: "Время",
-  event: "Событие",
-  allDay: "Весь день",
-  week: "Неделя",
-  month: "Месяц",
-  day: "День",
-  agenda: "Повестка дня",
-};
+moment.locale('ru');
+
+// const messages = {
+//   date: "Дата",
+//   time: "Время",
+//   event: "Событие",
+//   allDay: "Весь день",
+//   week: "Неделя",
+//   month: "Месяц",
+//   day: "День",
+//   agenda: "Повестка дня",
+//   previous: "Предыдущий",
+//   next: "Следующий",
+//   today: "Сегодня",
+//   noEventsInRange: "Нет событий в этом диапазоне",
+//   // showMore: (total) => `+${total} еще`,
+// };
 
 const localizer = momentLocalizer(moment);
 moment.updateLocale("ru", {
   week: {
     dow: 1,
     doy: 4,
-  },
-  weekdaysMin: ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+  }
 });
 
 function App() {
@@ -123,6 +130,7 @@ function App() {
   };
 
   const handleEventClick = async (event) => {
+    console.log(event)
     setSelectedEvent(event);
     setModalEventOpen(true);
   };
@@ -141,25 +149,6 @@ function App() {
     }
   };
 
-  const customEventPropGetter = (event, start, end, isSelected) => {
-    const currentDate = new Date();
-    if (start < currentDate) {
-      return {
-        className: "past-event",
-      };
-    }
-    return {};
-  };
-
-  const dayStyleGetter = (date, now) => {
-    const style = {
-      height: "128px",
-    };
-    return {
-      style,
-    };
-  };
-
   useEffect(() => {
     const fetchDataAndHandleError = async () => {
       try {
@@ -175,6 +164,7 @@ function App() {
             });
           }
           return {
+            id: el.id,
             title: el.title,
             start: start,
             end: end,
@@ -182,6 +172,7 @@ function App() {
             photos: el.photos,
             location: el.location,
             participants: el.participants,
+            owner: el.owner,
           };
         });
         const resolvedEvents = await Promise.all(formattedEvents);
@@ -193,6 +184,20 @@ function App() {
 
     fetchDataAndHandleError();
   }, [showCreateEventModal]);
+  
+  const customEventPropGetter = (event, start, end, isSelected) => {
+    const currentDate = new Date();
+    const currentDateFormatted = format(currentDate, "yyyy-MM-dd");
+    const startFormatted = format(start, "yyyy-MM-dd");
+    const endFormatted = format(end, "yyyy-MM-dd");
+  
+    if (startFormatted === currentDateFormatted && endFormatted === currentDateFormatted) {
+      return {
+        className: "event-today",
+      };
+    }
+    return {};
+  };
 
   return (
     <div className={styles.appContainer}>
@@ -202,6 +207,7 @@ function App() {
           onPrevClick={handlePrevClick}
           onNextClick={handleNextClick}
           allUsers={allUsers}
+          setAuthenticated={setIsAuthenticated}
         />
       ) : (
         <CustomToolbarNoAuth
@@ -220,7 +226,6 @@ function App() {
         selectable
         eventPropGetter={customEventPropGetter}
         onSelectEvent={handleEventClick}
-        dayPropGetter={dayStyleGetter}
         onSelectSlot={(slotInfo) => {
           setSelectedSlot(slotInfo);
           openCreateEventModal();
@@ -239,12 +244,14 @@ function App() {
         onClose={closeCreateEventModal}
         onSave={handleSaveEvent}
         userList={allUsers}
+        setAuthenticated={setIsAuthenticated}
       />
       <ModalEvent
         event={selectedEvent}
         open={modalEventOpen}
         onClose={handleModalEventClose}
         onNext={handleModalEventNext}
+        setAuthenticated={setIsAuthenticated}
       />
       <ModalLogin
         open={modalLoginOpen}

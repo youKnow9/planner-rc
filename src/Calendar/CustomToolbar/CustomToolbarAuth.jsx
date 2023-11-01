@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./CalendarHeader.scss";
 import moment from "moment";
-import CreateEventModal from "../CreateEventModal/CreateEventModal";
+import CreateEventModal from "../../Modal/CreateEventModal/CreateEventModal";
 
-const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, allUsers }) => {
+const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, allUsers, setAuthenticated }) => {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const currentDate = moment(date);
   const currentMonth = currentDate.format("MMMM");
@@ -43,6 +43,7 @@ const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, allUsers }) => {
           open={showCreateEventModal}
           onClose={() => setShowCreateEventModal(false)}
           userList={allUsers}
+          setAuthenticated={setAuthenticated}
         />
       )}
     </div>

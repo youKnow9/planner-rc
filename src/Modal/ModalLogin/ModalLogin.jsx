@@ -1,10 +1,10 @@
 import { React, useState, useEffect } from "react";
 import Modal from "@mui/material/Modal";
-import api from "../../shared/Api/init";
-import ModalSuccess from "./ModalSuccess";
-import ModalRegisterUser from "./ModalRegisterUser";
+import api from "../../../shared/Api/init";
+import ModalSuccess from "../ModalSuccess/ModalSuccess";
+import ModalRegisterUser from "../ModalRegisterUser/ModalRegisterUser";
 import "./ModalLogin.scss";
-import Input from "./InputEmail/InputEmail";
+import Input from "../InputEmail/InputEmail";
 
 const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
   const [email, setEmail] = useState("");

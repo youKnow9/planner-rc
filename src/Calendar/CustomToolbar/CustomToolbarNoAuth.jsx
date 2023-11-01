@@ -23,7 +23,6 @@ const CustomToolbarNoAuth = ({ date, allUsers, onPrevClick, onNextClick, onNext 
             </div>
             <button className='custom-button' onClick={onNext}>Войти</button>
           </div>
-          
         </div>
       </div>
     );

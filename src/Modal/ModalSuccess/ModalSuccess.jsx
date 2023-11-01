@@ -1,8 +1,8 @@
 import { React, useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
-import api from "../../shared/Api/init";
+import api from "../../../shared/Api/init";
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import Input from './InputEmail/InputEmail';
+import Input from '../InputEmail/InputEmail';
 
 const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }) => {
     // const [username, setUsername] = useState('');

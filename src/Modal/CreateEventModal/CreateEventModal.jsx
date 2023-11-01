@@ -7,10 +7,10 @@ import ru from 'date-fns/locale/ru';
 import './CreateEventModal.scss';
 import Modal from '@mui/material/Modal';
 import InputMask from "react-input-mask";
-import api from "../../shared/Api/init";
+import api from "../../../shared/Api/init";
 import Select from 'react-select';
 
-const CreateEventModal = ({ open, onClose, onSave, userList }) => {
+const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState(new Date());
@@ -116,24 +116,23 @@ const CreateEventModal = ({ open, onClose, onSave, userList }) => {
     preparedDateStart.setHours(parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]));
     
     try {
-      const photos = files.map(file => ({id: file.serverResponse?.data?.[0]?.id}));
-  
+      const photos = files.map(file => ({id: file.serverResponse?.data?.[0]?.id || null}));
       const event = {
         title,
         description,
         dateStart: preparedDateStart.toISOString(),
         location,
-        participants: participants.map(participant => participant.id),
+        participants: participants.map(participant => participant.value),
         photos
       };
-
+      
       await api.post('/events', event, {
         headers: {
           'Authorization': `Bearer ${jwt}`,
-          // 'Content-Type': 'application/json'
+          'Content-Type': 'application/json'
         }
       });
-  
+      setAuthenticated();
       clearState();
       onClose();
     } catch (error) {
@@ -165,7 +164,7 @@ const CreateEventModal = ({ open, onClose, onSave, userList }) => {
                 isMulti
                 placeholder="Участники"
                 value={participants}
-                onChange={(selected) => setParticipants(selected)}
+                onChange={(selected) => {setParticipants(selected); console.log(selected);}}
                 options={users}
               />
               <Upload.Dragger {...uploadProps}>

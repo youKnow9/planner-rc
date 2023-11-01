@@ -1,11 +1,11 @@
 import React from 'react';
 import Modal from '@mui/material/Modal';
-import Carousel from "../Slider/Carousel";
-import './ModalEvent.scss'
+import Carousel from "../../Slider/Carousel";
+import './ModalEvent.scss';
+import EventAuthBtn from './EventBtn/EventAuthBtn';
+import EventNoAuthBtn from './EventBtn/EventNoAuthBtn';
 
-
-const ModalEvent = ({ event, open, onClose, onNext }) => {
-
+const ModalEvent = ({ event, open, onClose, onNext, setAuthenticated }) => {
     if (!open || !event) return null;
 
     const formatEventDate = (event) => {
@@ -52,21 +52,35 @@ const ModalEvent = ({ event, open, onClose, onNext }) => {
                         </div>
                         <h3>Участники</h3>
                         <div className='participants'>
+                            {event.owner && (
+                                <div className='participant' key={event.owner.id}>
+                                    <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
+                                    <div>
+                                        <span className='participant-name'>{event.owner.username}</span>
+                                        <p className='owner-name'>Организатор</p>
+                                    </div>
+
+                                </div>
+                            )}
                             {shownParticipants.map(participant => (
-                            <div className='participant' key={participant.id}>
-                                <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
-                                <span className='participant-name'>{participant.username}</span>
-                            </div>
+                                <div className='participant' key={participant.id}>
+                                    {event.owner && participant.id === event.owner.id ? null : (
+                                        <>
+                                            <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
+                                            <span className='participant-name'>{participant.username}</span>
+                                        </>
+                                    )}
+                                </div>
                             ))}
                             {additionalParticipants > 0 && (
-                            <div className="additional-participants">
-                                <div className='participant-avatar-stack'>
-                                    <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
-                                    <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
-                                    <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
+                                <div className="additional-participants">
+                                    <div className='participant-avatar-stack'>
+                                        <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
+                                        <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
+                                        <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
+                                    </div>
+                                    <p className='participant-num'>Еще +{additionalParticipants}</p>
                                 </div>
-                                <p className='participant-num'>Еще +{additionalParticipants}</p>
-                            </div>
                             )}
                         </div>
                     </div>
@@ -74,10 +88,7 @@ const ModalEvent = ({ event, open, onClose, onNext }) => {
                 <div className='navi'>
                     <Carousel event={ event } />
                 </div>
-                <div className='wrapper-auth'>
-                    <span onClick= {onNext} className="login-link">Войдите</span>
-                    <span>, чтобы присоединиться к событию</span>
-                </div>
+                {!localStorage.getItem('jwt') ? (<EventNoAuthBtn/>) : (<EventAuthBtn event={event}/>)}
             </div>
         </Modal>
     );

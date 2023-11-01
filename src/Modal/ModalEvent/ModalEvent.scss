@@ -1,4 +1,4 @@
-@import '../fonts.scss';
+@import '../../fonts.scss';
 
 * {
   margin: 0;
@@ -104,6 +104,14 @@ h3 {
       font-style: normal;
       font-weight: 500;
       font-family: 'TT Commons Medium';
+    }
+
+    .owner-name {
+      border-radius: 8px;
+      background: #EFDAFC;
+      padding: 2px 4px 1px 4px;
+      font-family: 'TT Commons Medium';
+      font-size: 14px;
     }
   }
 }
