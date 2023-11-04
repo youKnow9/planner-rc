@@ -44,7 +44,7 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-    input {
+    input, .css-13cymwt-control {
         border: none;
         width: 100%;
         padding: 18px 16px;
@@ -52,8 +52,43 @@
         border: 1px solid var(--Gray, #B3B3BC);
         background: var(--basic-base, #FFF);
     }
+    .css-13cymwt-control {
+        padding: 5px;
+        cursor: pointer;
+
+        #react-select-3-placeholder {
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        .css-1u9des2-indicatorSeparator {
+            display: none;
+        }
+    }
+}
+.css-t3ipsp-control:hover {
+    border: 1px solid var(--Gray, #B3B3BC) !important;
+    border-color: var(--Gray, #B3B3BC) !important;
+    box-shadow: none !important;
+    border-radius: 12px !important;
+    padding: 5px !important;
 }
 
+.css-t3ipsp-control:focus {
+    border: 1px solid var(--Gray, #B3B3BC) !important;
+    border-color: var(--Gray, #B3B3BC) !important;
+    box-shadow: none !important;
+    border-radius: 12px !important;
+    padding: 5px !important;
+}
+
+.css-1d3z3hw-MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}
+.MuiInputBase-input, .MuiOutlinedInput-input, .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    font-family: 'Redcollar' !important;
+
+}
 .time-wrapper {
     display: flex;
     flex-direction: column;
@@ -66,12 +101,8 @@
         border-radius: 12px;
         border: 1px solid var(--Gray, #B3B3BC);
         background: var(--basic-base, #FFF);
+        font-size: 14px;
     }
-}
-
-.dataPicker-wrapper {
-    display: flex;
-    gap: 8px;
 }
 
 .react-datepicker__header {
@@ -145,4 +176,8 @@
 .preview {
     width: 133px;
     position: relative;
+}
+
+:where(.css-dev-only-do-not-override-pr0fja).ant-upload-wrapper .ant-upload-list .ant-upload-list-item {
+    color: #0D0C0C !important;
 }

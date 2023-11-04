@@ -12,7 +12,8 @@ const EventAuthBtn = ({ event }) => {
 
     const handleJoinEvent = async () => {
         try {
-            await api.post(`/events/${event.id}/join`, {
+            console.log(localStorage.getItem('jwt'))
+            await api.post(`/events/${event.id}/join`, null, {
                 headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
             });
             setModalJoinOpen(true);

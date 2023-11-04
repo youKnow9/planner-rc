@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input, Upload } from 'antd';
 import { InboxOutlined } from '@ant-design/icons';
 import DatePicker from "react-datepicker";
@@ -6,19 +6,21 @@ import "react-datepicker/dist/react-datepicker.css";
 import ru from 'date-fns/locale/ru';
 import './CreateEventModal.scss';
 import Modal from '@mui/material/Modal';
-import InputMask from "react-input-mask";
 import api from "../../../shared/Api/init";
 import Select from 'react-select';
+import { useDropzone } from 'react-dropzone';
+import TextField from '@mui/material/TextField';
 
 const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated }) => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date(startDate.getTime() + 60 * 60 * 1000));
   const [startTime, setStartTime] = useState("");
   const [location, setLocation] = useState('');
   const [participants, setParticipants] = useState([]);
   const [files, setFiles] = useState([]);
+  const [time, setTime] = useState('10:00');
 
   const clearState = () => {
     setTitle('');
@@ -30,14 +32,6 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
     setParticipants([]);
     setFiles([]);
   }
-
-  const isValid = 
-  title.trim() !== "" &&
-  description.trim() !== "" &&
-  startDate !== null &&
-  endDate !== null &&
-  startTime.trim() !== "" &&
-  location.trim() !== "";
   
   const users = userList ? userList.map(user => ({ value: user.id, label: user.username })) : []
   
@@ -48,27 +42,27 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
   const handleClose = () => {
     clearState();
     onClose();
+    console.log(onClose())
   };
 
   const uploadFile = async (file, jwt) => {
     try {
       const formData = new FormData();
       formData.append('files', file);
-  
+
       const response = await api.post('/upload', formData, {
         headers: {
           'Authorization': `Bearer ${jwt}`,
           'Content-Type': 'multipart/form-data'
         }
       });
-  
+
       console.log("Response", response);
-      setFiles(oldFiles => [...oldFiles, {
+      return {
         url: URL.createObjectURL(file),
-        serverResponse: response
-      }]);
-  
-      return response;
+        serverResponse: response,
+        name: file.name // add this line
+      };
     } catch (error) {
       console.error("Ошибка при загрузке фотографии:", error);
     }
@@ -83,19 +77,12 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
         return;
       }
   
-      await uploadFile(file, jwt);
+      const uploadedFile = await uploadFile(file, jwt);
+      setFiles(oldFiles => [...oldFiles, uploadedFile]);
       
       return false;
     },
     multiple: true,
-    customRequest: () => {}, 
-    fileList: files,
-    onRemove: (file) => {
-      const index = files.indexOf(file);
-      if (index >= 0) {
-        setFiles(oldFiles => oldFiles.slice(0, index).concat(oldFiles.slice(index + 1)));
-      }
-    }
   };
 
   const handleRemove = (index) => {
@@ -113,7 +100,7 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
     }
 
     const preparedDateStart = new Date(startDate);
-    preparedDateStart.setHours(parseInt(startTime.split(':')[0]), parseInt(startTime.split(':')[1]));
+    preparedDateStart.setHours(parseInt(time.split(':')[0]), parseInt(time.split(':')[1]));
     
     try {
       const photos = files.map(file => ({id: file.serverResponse?.data?.[0]?.id || null}));
@@ -140,6 +127,12 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
     }
   };
 
+  useEffect(() => {
+    setEndDate(new Date(startDate.getTime() + 60 * 60 * 1000));
+  }, [startDate]);
+
+  const isSaveDisabled = !title || !description || !location;
+
   return (
     <Modal open={open} onClose={handleClose}>
       <div className="modal-content">
@@ -148,34 +141,33 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
         </div>
         <h3>Create Event</h3>
         <div className="create-wrapper">
-            <div className="info-wrapper">
-              <Input
-                autoFocus
-                placeholder="Название *"
-                onChange={(e) => setTitle(e.target.value)}
-                value={title}
-              />
-              <Input
-                placeholder="Описание *"
-                onChange={(e) => setDescription(e.target.value)}
-                value={description}
-              />
-              <Select
-                isMulti
-                placeholder="Участники"
-                value={participants}
-                onChange={(selected) => {setParticipants(selected); console.log(selected);}}
-                options={users}
-              />
-              <Upload.Dragger {...uploadProps}>
+          <div className="info-wrapper">
+            <Input
+              autoFocus
+              placeholder="Название *"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+            />
+            <Input
+              placeholder="Описание *"
+              onChange={(e) => setDescription(e.target.value)}
+              value={description}
+            />
+            <Select
+              isMulti
+              placeholder="Участники"
+              value={participants}
+              onChange={(selected) => {setParticipants(selected); console.log(selected);}}
+              options={users}
+            />
+            <Upload.Dragger {...uploadProps}>
               <p className="ant-upload-icon">
                 <InboxOutlined />
               </p>
               <p className="ant-upload-text">Выберите файлы или перетащите их сюда</p>
             </Upload.Dragger>
-            </div>
-            <div className="time-wrapper">
-              <div className="dataPicker-wrapper">
+          </div>
+          <div className="time-wrapper">
               <DatePicker
                 selected={startDate}
                 onChange={(date) => setStartDate(date)}
@@ -184,48 +176,27 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
                 endDate={endDate}
                 locale={ru}
               />
-              <DatePicker
-                selected={endDate}
-                onChange={(date) => setEndDate(date)}
-                selectsEnd
-                startDate={startDate}
-                endDate={endDate}
-                minDate={startDate}
-                locale={ru}
+              <TextField
+                id="time"
+                type="time"
+                value={time}
+                onChange={(e) => setTime(e.target.value)}
+                InputLabelProps={{
+                  shrink: false,
+                }}
+                inputProps={{
+                  step: 300, // 5 min
+                  readOnly: true // add this line
+                }}
               />
+                <Input
+                  placeholder="Место проведения *"
+                  onChange={(e) => setLocation(e.target.value)}
+                  value={location}
+                />
               </div>
-              <InputMask 
-                mask="99:99" 
-                maskChar={null} 
-                value={startTime}
-                onChange={(e) => setStartTime(e.target.value)}
-              >
-                {(inputProps) => (
-                  <input
-                    {...inputProps}
-                    type="text"
-                    placeholder="Время *"
-                  />
-                )}
-            </InputMask>
-              <Input
-                placeholder="Место проведения *"
-                onChange={(e) => setLocation(e.target.value)}
-                value={location}
-              />
-               <div className="preview-images">
-                {
-                  files.map((file, index) => (
-                    <div key={index}>
-                      <img className="preview" src={file} alt="preview" />
-                      <button className="del-img" onClick={() => handleRemove(index)}><img src="https://svgshare.com/i/yFX.svg" alt="close" /></button>
-                    </div>
-                  ))
-                }
-              </div>
-            </div>
-        </div>
-        <Button className="save-bt" type="primary" onClick={handleSave} disabled={!isValid}>Сохранить</Button>
+          </div>
+          <Button className="save-bt" type="primary" onClick={handleSave} disabled={isSaveDisabled}>Сохранить</Button>
       </div>
     </Modal>
   );

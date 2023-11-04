@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CalendarHeader.scss";
 import moment from "moment";
 import CreateEventModal from "../../Modal/CreateEventModal/CreateEventModal";
 
-const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, allUsers, setAuthenticated }) => {
+const CustomToolbarAuth = ({ open, onClose, onSave, date, onPrevClick, onNextClick, allUsers, setAuthenticated }) => {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const currentDate = moment(date);
   const currentMonth = currentDate.format("MMMM");
+
 
   return (
     <div className="calendar-header">
@@ -31,8 +32,7 @@ const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, allUsers, setAuthen
           <div className="bt-wrapper">
             <button
               className="custom-button-plus"
-              onClick={() => setShowCreateEventModal(true)}
-            >
+              onClick={() => setShowCreateEventModal(true)}>
               <img src="https://svgshare.com/i/yXh.svg" alt="add-event" />
             </button>
           </div>
@@ -41,9 +41,11 @@ const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, allUsers, setAuthen
       {showCreateEventModal && (
         <CreateEventModal
           open={showCreateEventModal}
-          onClose={() => setShowCreateEventModal(false)}
+          onClose={() => onClose}
           userList={allUsers}
-          setAuthenticated={setAuthenticated}
+          setAuthenticated={() => setAuthenticated(true)}
+          // onClose={closeCreateEventModal}
+          onSave={() => onSave}
         />
       )}
     </div>

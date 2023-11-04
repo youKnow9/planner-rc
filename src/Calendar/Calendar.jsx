@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Calendar,
   momentLocalizer,
-  dateFnsLocalizer,
 } from "react-big-calendar";
 import moment from "moment";
 import CreateEventModal from "../Modal/CreateEventModal/CreateEventModal";
@@ -19,22 +18,6 @@ import styles from "./Calendar.scss";
 import { format } from "date-fns";
 
 moment.locale('ru');
-
-// const messages = {
-//   date: "Дата",
-//   time: "Время",
-//   event: "Событие",
-//   allDay: "Весь день",
-//   week: "Неделя",
-//   month: "Месяц",
-//   day: "День",
-//   agenda: "Повестка дня",
-//   previous: "Предыдущий",
-//   next: "Следующий",
-//   today: "Сегодня",
-//   noEventsInRange: "Нет событий в этом диапазоне",
-//   // showMore: (total) => `+${total} еще`,
-// };
 
 const localizer = momentLocalizer(moment);
 moment.updateLocale("ru", {
@@ -207,6 +190,10 @@ function App() {
           onPrevClick={handlePrevClick}
           onNextClick={handleNextClick}
           allUsers={allUsers}
+          open={showCreateEventModal}
+          // onClose={closeCreateEventModal}
+          onSave={handleSaveEvent}
+          userList={allUsers}
           setAuthenticated={setIsAuthenticated}
         />
       ) : (
