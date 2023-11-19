@@ -1,6 +1,11 @@
 @import '../fonts.scss';
 $svg-data-uri: url('../../shared/Img/star.svg') format('svg');
 
+.participates-event {
+  background-color: red !important;
+  color: white;
+}
+
 .rbc-calendar {
   display: flex;
   justify-content: space-between;

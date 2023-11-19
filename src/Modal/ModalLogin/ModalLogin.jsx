@@ -13,6 +13,13 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+  }, []);
+
   const isEmailValid = (email) => {
     const regex = /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/;
     return regex.test(email);
@@ -24,7 +31,6 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
       return true;
     } catch (error) {
       if (error.response ) {
-        
         return false;
       } else {
         
@@ -37,18 +43,21 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
     if (isEmailValid(email)) {
       const isEmailTaken = await checkExistsEmail(email);
       if (isEmailTaken) {
+        // onNext(email);
         setShowSuccessModal(true);
       } else {
+        // onNext(email);
         setShowRegisterModal(true);
       }
+      localStorage.setItem("email", email);
     } else {
       setError(true);
     }
   };
   
   const handleLoginClose = () => {
-    setShowSuccessModal(false); // Close ModalSuccess
-    onClose(); // Close ModalLogin
+    setShowSuccessModal(false);
+    onClose();
   };
   
   return (
@@ -86,7 +95,7 @@ const ModalLogin = ({ open, onClose, onNext, setAuthenticated }) => {
           email={email}
           onClose={() => {
             setShowRegisterModal(false);
-            onClose(); // Close ModalLogin
+            onClose();
           }}
           setAuthenticated={setAuthenticated}
         />

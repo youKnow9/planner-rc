@@ -44,7 +44,6 @@ const CustomToolbarAuth = ({ open, onClose, onSave, date, onPrevClick, onNextCli
           onClose={() => onClose}
           userList={allUsers}
           setAuthenticated={() => setAuthenticated(true)}
-          // onClose={closeCreateEventModal}
           onSave={() => onSave}
         />
       )}

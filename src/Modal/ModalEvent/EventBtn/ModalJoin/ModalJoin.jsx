@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import ReactDOM from 'react-dom';
+import './ModalJoin.scss';
+import Modal from '@mui/material/Modal';
 
 const ModalJoin = ({ open, onClose, eventInfo }) => {
   if (!open) {
@@ -6,17 +9,18 @@ const ModalJoin = ({ open, onClose, eventInfo }) => {
   }
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Поздравляем!</h2>
-        <p>Вы теперь участник события:</p>
-        <p>{eventInfo.title}</p>
-        <p>{eventInfo.date}</p>
-        <p>{eventInfo.location}</p>
-        <button onClick={onClose}>отлично!</button>
+    <Modal open={open} onClose={onClose}>
+      <div className="modal modal-join">
+        <div className="wrapper-login wrapper-join">
+          <h2 className='title-join'>Поздравляем!</h2>
+          <div className='info-event'>
+            <p className='info-bl'>Вы теперь участник события:</p>
+            <p className='title-red'>{eventInfo.title}</p>
+          </div>
+          <button className="next-bt bt" onClick={onClose}>Отлично!</button>
+        </div>
       </div>
-    </div>
+    </Modal>
   );
 };
-
 export default ModalJoin;

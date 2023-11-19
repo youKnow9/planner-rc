@@ -5,11 +5,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import Input from '../InputEmail/InputEmail';
 
 const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }) => {
-    // const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showPasswords, setShowPasswords] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
-    // const [error, setError] = useState(false);
     const [passwordsMatch, setPasswordsMatch] = useState(true);
 
     useEffect(() => {

@@ -1,0 +1,9 @@
+@mixin balck-btn {
+	width: 346px;
+	padding: 21px 32px;
+	border-radius: 12px;
+	background: var(--main-colors-black, #0D0C0C);
+	color: var(--main-colors-white, var(--basic-base, #FFF));
+	font-size: 18px;
+	cursor: pointer;
+}

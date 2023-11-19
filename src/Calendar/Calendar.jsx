@@ -16,8 +16,11 @@ import CustomToolbarNoAuth from "../Calendar/CustomToolbar/CustomToolbarNoAuth";
 import CustomToolbarAuth from "../Calendar/CustomToolbar/CustomToolbarAuth";
 import styles from "./Calendar.scss";
 import { format } from "date-fns";
-
+import EventAuthBtn from '../Modal/ModalEvent/EventBtn/EventAuthBtn';
+import EventNoAuthBtn from '../Modal/ModalEvent/EventBtn/EventNoAuthBtn';
 moment.locale('ru');
+
+import { ModalContext } from '../ModalContextProvider';
 
 const localizer = momentLocalizer(moment);
 moment.updateLocale("ru", {
@@ -33,16 +36,31 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [modalEventOpen, setModalEventOpen] = useState(false);
-  const [modalLoginOpen, setModalLoginOpen] = useState(false);
-  const [modalRegisterOpen, setModalRegisterOpen] = useState(false);
+  // const [modalEventOpen, setModalEventOpen] = useState(false);
+  // const [modalLoginOpen, setModalLoginOpen] = useState(false);
+  // const [modalRegisterOpen, setModalRegisterOpen] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
-  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+  // const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+  const [emailUser, setEmailUser] = useState('');
+  const {
+    showCreateEventModal,
+    openCreateEventModal,
+    closeCreateEventModal,
+    modalEventOpen,
+    openModalEvent,
+    closeModalEvent,
+    modalLoginOpen,
+    openModalLogin,
+    closeModalLogin,
+    modalRegisterOpen,
+    openModalRegister,
+    closeModalRegister,
+  } = useContext(ModalContext);
 
   function getJWTFromLocalStorage() {
     return localStorage.getItem("jwt");
   }
-
+  
   useEffect(() => {
     const jwt = getJWTFromLocalStorage();
     if (jwt) {
@@ -103,9 +121,10 @@ function App() {
     setModalLoginOpen(false);
   };
 
-  const handleModalLoginNext = () => {
+  const handleModalLoginNext = (email) => {
     setModalLoginOpen(false);
     setModalRegisterOpen(true);
+    setEmailUser(email);
   };
 
   const handleModalRegisterClose = () => {
@@ -113,7 +132,6 @@ function App() {
   };
 
   const handleEventClick = async (event) => {
-    console.log(event)
     setSelectedEvent(event);
     setModalEventOpen(true);
   };
@@ -160,6 +178,7 @@ function App() {
         });
         const resolvedEvents = await Promise.all(formattedEvents);
         setEvents(resolvedEvents);
+
       } catch (error) {
         console.error(error);
       }
@@ -167,19 +186,29 @@ function App() {
 
     fetchDataAndHandleError();
   }, [showCreateEventModal]);
-  
-  const customEventPropGetter = (event, start, end, isSelected) => {
+
+  const customEventPropGetter = (event, start, end) => {
+    // const func = (event) => {
+    //   if (event.participants.email === currentUserEmail) {
+    //     return event
+    //   }
+    // }
+    // // console.log(event)
+    // const currentUserEmail = localStorage.getItem("email");
+    // console.log(event.participants.find(func))
+
+
+
     const currentDate = new Date();
     const currentDateFormatted = format(currentDate, "yyyy-MM-dd");
     const startFormatted = format(start, "yyyy-MM-dd");
     const endFormatted = format(end, "yyyy-MM-dd");
-  
+
     if (startFormatted === currentDateFormatted && endFormatted === currentDateFormatted) {
       return {
         className: "event-today",
       };
     }
-    return {};
   };
 
   return (
@@ -191,7 +220,6 @@ function App() {
           onNextClick={handleNextClick}
           allUsers={allUsers}
           open={showCreateEventModal}
-          // onClose={closeCreateEventModal}
           onSave={handleSaveEvent}
           userList={allUsers}
           setAuthenticated={setIsAuthenticated}
@@ -234,7 +262,7 @@ function App() {
         setAuthenticated={setIsAuthenticated}
       />
       <ModalEvent
-        event={selectedEvent}
+        eventSelect={selectedEvent}
         open={modalEventOpen}
         onClose={handleModalEventClose}
         onNext={handleModalEventNext}

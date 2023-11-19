@@ -1,0 +1,28 @@
+.wrapper-join {
+	background-image: url(../../../../../shared/Img/bg-join.png);
+	background-size: contain;
+	width: 770px;
+	height: 510px;	
+	display: flex;
+	align-items: flex-start !important;
+}
+
+.title-join {
+	color: var(--main-colors-black, #0D0C0C);
+	font-family: Redcollar;
+	font-size: 64px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 120%;
+	letter-spacing: -2.56px;
+}
+
+.title-red {
+	color: var(--main-colors-accent, #F51B1B);
+	font-size: 18px;
+}
+
+.info-bl {
+	color: var(--main-colors-black, #0D0C0C);
+	font-size: 18px;
+}

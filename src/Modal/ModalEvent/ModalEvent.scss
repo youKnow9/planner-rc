@@ -1,11 +1,11 @@
-@import '../../fonts.scss';
+@import '../../fonts.scss'; @import '../../components.scss'; 
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-  
+
 .data-event {
   display: flex;
   gap: 32px;
