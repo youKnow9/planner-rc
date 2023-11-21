@@ -41,8 +41,6 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
   
   const handleClose = () => {
     clearState();
-    onClose();
-    console.log(onClose())
   };
 
   const uploadFile = async (file, jwt) => {

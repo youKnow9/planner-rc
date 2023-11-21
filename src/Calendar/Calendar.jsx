@@ -16,11 +16,8 @@ import CustomToolbarNoAuth from "../Calendar/CustomToolbar/CustomToolbarNoAuth";
 import CustomToolbarAuth from "../Calendar/CustomToolbar/CustomToolbarAuth";
 import styles from "./Calendar.scss";
 import { format } from "date-fns";
-import EventAuthBtn from '../Modal/ModalEvent/EventBtn/EventAuthBtn';
-import EventNoAuthBtn from '../Modal/ModalEvent/EventBtn/EventNoAuthBtn';
 moment.locale('ru');
-
-import { ModalContext } from '../ModalContextProvider';
+import { Context } from '../Context';
 
 const localizer = momentLocalizer(moment);
 moment.updateLocale("ru", {
@@ -36,27 +33,13 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
   const [currentDate, setCurrentDate] = useState(new Date());
-  // const [modalEventOpen, setModalEventOpen] = useState(false);
-  // const [modalLoginOpen, setModalLoginOpen] = useState(false);
-  // const [modalRegisterOpen, setModalRegisterOpen] = useState(false);
+  const [modalEventOpen, setModalEventOpen] = useState(false);
+  const [modalLoginOpen, setModalLoginOpen] = useState(false);
+  const [modalRegisterOpen, setModalRegisterOpen] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
-  // const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const [emailUser, setEmailUser] = useState('');
-  const {
-    showCreateEventModal,
-    openCreateEventModal,
-    closeCreateEventModal,
-    modalEventOpen,
-    openModalEvent,
-    closeModalEvent,
-    modalLoginOpen,
-    openModalLogin,
-    closeModalLogin,
-    modalRegisterOpen,
-    openModalRegister,
-    closeModalRegister,
-  } = useContext(ModalContext);
-
+  const [participantsUpdated, setParticipantsUpdated] = useState(false);
   function getJWTFromLocalStorage() {
     return localStorage.getItem("jwt");
   }
@@ -176,29 +159,17 @@ function App() {
             owner: el.owner,
           };
         });
-        const resolvedEvents = await Promise.all(formattedEvents);
+        let resolvedEvents = await Promise.all(formattedEvents);
         setEvents(resolvedEvents);
-
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchDataAndHandleError();
-  }, [showCreateEventModal]);
+  }, [showCreateEventModal, participantsUpdated]);
 
   const customEventPropGetter = (event, start, end) => {
-    // const func = (event) => {
-    //   if (event.participants.email === currentUserEmail) {
-    //     return event
-    //   }
-    // }
-    // // console.log(event)
-    // const currentUserEmail = localStorage.getItem("email");
-    // console.log(event.participants.find(func))
-
-
-
     const currentDate = new Date();
     const currentDateFormatted = format(currentDate, "yyyy-MM-dd");
     const startFormatted = format(start, "yyyy-MM-dd");
@@ -261,13 +232,15 @@ function App() {
         userList={allUsers}
         setAuthenticated={setIsAuthenticated}
       />
-      <ModalEvent
-        eventSelect={selectedEvent}
-        open={modalEventOpen}
-        onClose={handleModalEventClose}
-        onNext={handleModalEventNext}
-        setAuthenticated={setIsAuthenticated}
-      />
+      <Context.Provider value={{ updateParticipants: participantsUpdated, setUpdateParticipants: setParticipantsUpdated }}>
+        <ModalEvent
+          eventSelect={selectedEvent}
+          open={modalEventOpen}
+          onClose={handleModalEventClose}
+          onNext={handleModalEventNext}
+          setAuthenticated={setIsAuthenticated}
+        />
+      </Context.Provider>
       <ModalLogin
         open={modalLoginOpen}
         onClose={handleModalLoginClose}

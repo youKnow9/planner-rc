@@ -2,11 +2,7 @@ import React from 'react';
 import api from '../../../../../shared/Api/init';
 // import './EventOwnerBtns.scss';
 
-const EventOwnerBtns = ({ event, onDelete, onEdit }) => {
-		const handleEditEvent = () => {
-		onEdit();
-		};
-	
+const EventOwnerBtns = ({ event, onDelete }) => {	
 		// const handleDeleteEvent = async () => {
 		// try {
 		// 	await api.delete(`/events/${event.id}`, {
@@ -21,7 +17,6 @@ const EventOwnerBtns = ({ event, onDelete, onEdit }) => {
 	
 		return (
 		<div className="event-owner-btns">
-			<button className='next-bt bl-btn' onClick={handleEditEvent}>Редактировать</button>
 			<button className='next-bt bl-btn' onClick={onDelete}>Удалить</button>
 		</div>
 		);
