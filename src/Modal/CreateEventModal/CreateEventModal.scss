@@ -6,14 +6,27 @@
   box-sizing: border-box;
 }
 
+#input:hover {
+    border: none;
+    border-radius: 12px;
+    border: 1px solid var(--Gray, #B3B3BC);
+}
+
+#input:focus {
+    border: none;
+    box-shadow: none;
+    border-radius: 12px;
+    border: 1px solid var(--Gray, #B3B3BC);
+}
+
 .modal-open {
     display: block;
 }
-  
+
 .modal-closed {
     display: none;
 }
- 
+
 .modal-content {
     position: fixed;
     top: 50%;
@@ -67,6 +80,8 @@
     }
 }
 .css-t3ipsp-control:hover {
+    box-shadow: none;
+    border: none;
     border: 1px solid var(--Gray, #B3B3BC) !important;
     border-color: var(--Gray, #B3B3BC) !important;
     box-shadow: none !important;
@@ -75,11 +90,14 @@
 }
 
 .css-t3ipsp-control:focus {
-    border: 1px solid var(--Gray, #B3B3BC) !important;
-    border-color: var(--Gray, #B3B3BC) !important;
+    box-shadow: none;
+    border: none;
+    // border: 1px solid var(--Gray, #B3B3BC) !important;
+    // border-color: var(--Gray, #B3B3BC) !important;
     box-shadow: none !important;
     border-radius: 12px !important;
     padding: 5px !important;
+    background-color: #111163;
 }
 
 .css-1d3z3hw-MuiOutlinedInput-notchedOutline {

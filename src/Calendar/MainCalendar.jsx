@@ -12,12 +12,13 @@ import api from "../../shared/Api/init";
 import ModalEvent from "../Modal/ModalEvent/ModalEvent";
 import ModalLogin from "../Modal/ModalLogin/ModalLogin";
 import ModalRegisterUser from "../Modal/ModalRegisterUser/ModalRegisterUser";
-import CustomToolbarNoAuth from "../Calendar/CustomToolbar/CustomToolbarNoAuth";
-import CustomToolbarAuth from "../Calendar/CustomToolbar/CustomToolbarAuth";
-import styles from "./Calendar.scss";
+import CustomToolbarNoAuth from "./CustomToolbar/CustomToolbarNoAuth";
+import CustomToolbarAuth from "./CustomToolbar/CustomToolbarAuth";
+import styles from "./MainCalendar.scss";
 import { format } from "date-fns";
-moment.locale('ru');
 import { Context } from '../Context';
+moment.locale('ru');
+
 
 const localizer = momentLocalizer(moment);
 moment.updateLocale("ru", {
@@ -27,7 +28,7 @@ moment.updateLocale("ru", {
   }
 });
 
-function App() {
+function MainCalendar() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -40,15 +41,16 @@ function App() {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const [emailUser, setEmailUser] = useState('');
   const [participantsUpdated, setParticipantsUpdated] = useState(false);
+  const [eventsDelite, setEventsDelite] = useState([])
+
   function getJWTFromLocalStorage() {
     return localStorage.getItem("jwt");
   }
-  
+
   useEffect(() => {
     const jwt = getJWTFromLocalStorage();
     if (jwt) {
       setIsAuthenticated(true);
-      // localStorage.removeItem('jwt');
     }
   }, []);
 
@@ -73,14 +75,6 @@ function App() {
     } else {
       console.log("Пользователь не авторизован");
     }
-  };
-
-  const handleLoginClick = () => {
-    setModalLoginOpen(true);
-  };
-
-  const setAuthenticated = () => {
-    setIsAuthenticated(true);
   };
 
   const handleModalEventClose = () => {
@@ -161,6 +155,7 @@ function App() {
         });
         let resolvedEvents = await Promise.all(formattedEvents);
         setEvents(resolvedEvents);
+        setEventsDelite(resolvedEvents);
       } catch (error) {
         console.error(error);
       }
@@ -232,7 +227,13 @@ function App() {
         userList={allUsers}
         setAuthenticated={setIsAuthenticated}
       />
-      <Context.Provider value={{ updateParticipants: participantsUpdated, setUpdateParticipants: setParticipantsUpdated }}>
+      <Context.Provider value={{ 
+          setEvents: setEvents, 
+          updateParticipants: participantsUpdated, 
+          setUpdateParticipants: setParticipantsUpdated, 
+          setEventsDelite: setEventsDelite,
+          eventsDelite: eventsDelite 
+          }}>
         <ModalEvent
           eventSelect={selectedEvent}
           open={modalEventOpen}
@@ -256,4 +257,4 @@ function App() {
   );
 }
 
-export default App;
+export default MainCalendar;

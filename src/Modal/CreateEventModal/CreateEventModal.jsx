@@ -41,6 +41,7 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
   
   const handleClose = () => {
     clearState();
+    onClose();
   };
 
   const uploadFile = async (file, jwt) => {
@@ -59,7 +60,7 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
       return {
         url: URL.createObjectURL(file),
         serverResponse: response,
-        name: file.name // add this line
+        name: file.name
       };
     } catch (error) {
       console.error("Ошибка при загрузке фотографии:", error);
@@ -83,15 +84,8 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
     multiple: true,
   };
 
-  const handleRemove = (index) => {
-    const newArr = [...files];
-    newArr.splice(index, 1);
-    setFiles(newArr);
-  };
-
   const handleSave = async () => {
     const jwt = getJWTFromLocalStorage();
-  
     if (!jwt) {
       console.error("JWT token not found in localStorage.");
       return;
@@ -117,7 +111,6 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
           'Content-Type': 'application/json'
         }
       });
-      setAuthenticated();
       clearState();
       onClose();
     } catch (error) {
@@ -141,17 +134,20 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
         <div className="create-wrapper">
           <div className="info-wrapper">
             <Input
+              id="input"
               autoFocus
               placeholder="Название *"
               onChange={(e) => setTitle(e.target.value)}
               value={title}
             />
             <Input
+              id="input"
               placeholder="Описание *"
               onChange={(e) => setDescription(e.target.value)}
               value={description}
             />
             <Select
+              id="input"
               isMulti
               placeholder="Участники"
               value={participants}
@@ -183,11 +179,12 @@ const CreateEventModal = ({ open, onClose, onSave, userList, setAuthenticated })
                   shrink: false,
                 }}
                 inputProps={{
-                  step: 300, // 5 min
-                  readOnly: true // add this line
+                  step: 300, 
+                  readOnly: true
                 }}
               />
                 <Input
+                  id="input"
                   placeholder="Место проведения *"
                   onChange={(e) => setLocation(e.target.value)}
                   value={location}

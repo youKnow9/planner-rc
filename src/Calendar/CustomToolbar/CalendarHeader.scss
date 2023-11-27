@@ -53,6 +53,14 @@
       background: var(--main-colors-black, #0D0C0C);
     }
   }
+
+  .custom-button {
+    padding: 21px 32px;
+    cursor: pointer;
+    color: var(--main-colors-white, var(--basic-base, #FFF));
+    border-radius: 12px;
+    background: var(--main-colors-black, #0D0C0C);
+  }
   
   .navi-wrapper {
     display: flex;
@@ -78,13 +86,4 @@
     height: 80px;
     background-image: url('https://i.ibb.co/3hhqxwp/Ellipse-1.png');
     background-size: 100% 100%;
-  }
-
-  .custom-button-plus {
-    width: 86px;
-    height: 60px;
-    cursor: pointer;
-    border: none;
-    border-radius: 12px;
-    background: var(--main-colors-black, #0D0C0C);
   }

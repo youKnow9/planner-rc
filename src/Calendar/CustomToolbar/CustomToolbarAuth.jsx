@@ -1,21 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState} from "react";
 import "./CalendarHeader.scss";
 import moment from "moment";
-import CreateEventModal from "../../Modal/CreateEventModal/CreateEventModal";
+import { motion } from "framer-motion";
+import Model from "./Logo/Logo";
+import ModalLogOut from './ModalLogOut/ModalLogOut';
 
-const CustomToolbarAuth = ({ open, onClose, onSave, date, onPrevClick, onNextClick, allUsers, setAuthenticated }) => {
-  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+const CustomToolbarAuth = ({ date, onPrevClick, onNextClick, setAuthenticated }) => {
+  const [modalLogOutOpen, setModalLogOutOpen] = useState(false);
   const currentDate = moment(date);
   const currentMonth = currentDate.format("MMMM");
 
+  const handleLogOutClose = () => {
+    setModalLogOutOpen(false);
+  };
+
+  const handleLogOutOpen = () => {
+    setModalLogOutOpen(true);
+  };
+  
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    setAuthenticated(false);
+  };
 
   return (
     <div className="calendar-header">
       <div className="header-content">
         <div>
-          <span className="name-rc">
-            planner <span>event</span>
-          </span>
+          <Model />
         </div>
         <div className="navi-wrapper">
           <div className="navigation-bt">
@@ -30,23 +42,18 @@ const CustomToolbarAuth = ({ open, onClose, onSave, date, onPrevClick, onNextCli
             </div>
           </div>
           <div className="bt-wrapper">
-            <button
-              className="custom-button-plus"
-              onClick={() => setShowCreateEventModal(true)}>
-              <img src="https://svgshare.com/i/yXh.svg" alt="add-event" />
-            </button>
+          <motion.div
+            className="box"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ type: "spring", stiffness: 400, damping: 17 }}
+          >
+            <button className="custom-button" onClick={handleLogOutOpen}>Выйти</button>
+            <ModalLogOut open={modalLogOutOpen} onClose={handleLogOutClose} handleLogout={handleLogout} />
+          </motion.div>
           </div>
         </div>
       </div>
-      {showCreateEventModal && (
-        <CreateEventModal
-          open={showCreateEventModal}
-          onClose={() => onClose}
-          userList={allUsers}
-          setAuthenticated={() => setAuthenticated(true)}
-          onSave={() => onSave}
-        />
-      )}
     </div>
   );
 };

@@ -1,25 +1,37 @@
-import React from 'react';
-import api from '../../../../../shared/Api/init';
-// import './EventOwnerBtns.scss';
+import React, { useState } from 'react';
+import { motion } from "framer-motion";
+import Confirmation from "../ModalDelete/ModalDelete"
+import Modal from '@mui/material/Modal';
 
-const EventOwnerBtns = ({ event, onDelete }) => {	
-		// const handleDeleteEvent = async () => {
-		// try {
-		// 	await api.delete(`/events/${event.id}`, {
-		// 	headers: { Authorization: `Bearer ${localStorage.getItem('jwt')}` }
-		// 	});
-		// 	onDelete();
-		// 	onClose();
-		// } catch (error) {
-		// 	console.error(error);
-		// }
-		// };
+
+const EventOwnerBtns = ({ onClose, onDelete }) => {
+	const handleDelete = () => {
+		setIsConfirmationOpen(true);
+	};
+
+	const handleDeleteConfirmation = () => {
+		onDelete();
+		setIsConfirmationOpen(false);
+	};
 	
-		return (
-		<div className="event-owner-btns">
-			<button className='next-bt bl-btn' onClick={onDelete}>Удалить</button>
-		</div>
-		);
+	const handleCancelConfirmation = () => {
+		setIsConfirmationOpen(false);
+	};
+	return (
+		<motion.div
+			className="box"
+			whileHover={{ scale: 1.05 }}
+			whileTap={{ scale: 0.9 }}
+			transition={{ type: "spring", stiffness: 400, damping: 17 }}
+		>
+			<div className="event-owner-btns">
+				<button className='next-bt bl-btn' onClick={handleDelete}>Удалить</button>
+			</div>
+			{isConfirmationOpen && (
+				<Confirmation onClose={onClose} isOpen={isConfirmationOpen} onDelete={handleDeleteConfirmation} onCancel={handleCancelConfirmation} />
+			)}
+		</motion.div>
+	);
 };
 
 export default EventOwnerBtns;

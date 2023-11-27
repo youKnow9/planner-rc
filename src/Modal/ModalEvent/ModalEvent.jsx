@@ -10,9 +10,8 @@ import { Context } from '../../Context';
 const ModalEvent = ({ eventSelect, open, onClose, onNext, setAuthenticated, children }) => {
 
     const [newParticipants, setNewParticipants] = useState(null);
-
+    
     if (!open || !eventSelect) return null;
-    console.log(newParticipants)
 
     const formatEventDate = (eventSelect) => {
         const options = {
@@ -31,10 +30,6 @@ const ModalEvent = ({ eventSelect, open, onClose, onNext, setAuthenticated, chil
     const discription = eventSelect.discription;
     const participants = eventSelect.participants;
     let additionalParticipants = Math.max(0, participants.length - 5);
-
-    const clearNewPrac = () => {
-        newParticipants(null)
-    }
 
     return (
         <Modal open={open} onClose={onClose}>
@@ -69,12 +64,11 @@ const ModalEvent = ({ eventSelect, open, onClose, onNext, setAuthenticated, chil
                                         </div>
                                     </div>
                                 )}
-                                {newParticipants !== null && newParticipants.idEvent === eventSelect.id? (
+                                {newParticipants !== null && newParticipants.idEvent === eventSelect.id ? (
                                     <div className='participant' key={newParticipants.id}>
                                         <img src='https://i.ibb.co/3hhqxwp/Ellipse-1.png' alt="avatar" className='participant-avatar' />
                                         <span className='participant-name'>{newParticipants.username}</span>
                                     </div>
-                                    
                                 ):(null)}
                                 {participants.map(participant => (
                                     <div className='participant' key={participant.id}>
@@ -97,7 +91,6 @@ const ModalEvent = ({ eventSelect, open, onClose, onNext, setAuthenticated, chil
                                     </div>
                                 )}
                             </div>
-                        
                     </div>
                 </div>
                 <div className='navi'>

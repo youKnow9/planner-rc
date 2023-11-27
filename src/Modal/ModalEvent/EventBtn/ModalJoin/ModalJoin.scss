@@ -1,12 +1,30 @@
 .wrapper-join {
-	background-image: url(../../../../../shared/Img/bg-join.png);
-	background-size: contain;
 	width: 770px;
 	height: 510px;	
 	display: flex;
 	align-items: flex-start !important;
+	overflow: hidden;
 }
 
+.wrapper-png img {
+	position: absolute;
+	width: 510px;
+	height: 510px;
+	top: -40px;
+	right: -200px;
+	z-index: -1;
+	opacity: 80%;
+	animation: spin 80s linear infinite;
+}
+
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
 .title-join {
 	color: var(--main-colors-black, #0D0C0C);
 	font-family: Redcollar;

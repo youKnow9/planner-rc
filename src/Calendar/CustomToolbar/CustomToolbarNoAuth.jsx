@@ -1,11 +1,10 @@
 import React from 'react';
 import './CalendarHeader.scss';
 import moment from 'moment';
-import Modal from '@mui/material/Modal';
+import { motion } from "framer-motion";
+import Model from "./Logo/Logo";
 
 const CustomToolbarNoAuth = ({ date, allUsers, onPrevClick, onNextClick, onNext  }) => {
-    const [showLoginModal, setShowLoginModal] = React.useState(false);
-  
     const currentDate = moment(date);
     const currentMonth = currentDate.format("MMMM");
     
@@ -13,15 +12,22 @@ const CustomToolbarNoAuth = ({ date, allUsers, onPrevClick, onNextClick, onNext 
       <div className='calendar-header'>
         <div className='header-content'>
           <div>
-            <span className='name-rc'>planner <span>event</span></span>
+            <Model />
           </div>
           <div className='navigation-bt'>
             <span className='current-month'>{currentMonth}</span>
             <div className='navigation-buttons'>
-                <button onClick={onPrevClick}><img src="https://svgshare.com/i/yKX.svg" alt="prev" /></button> {/* Предыдущий месяц */}
-                <button onClick={onNextClick}><img src="https://svgshare.com/i/yL3.svg" alt="next" /></button> {/* Следующий месяц */}
+                <button onClick={onPrevClick}><img src="https://svgshare.com/i/yKX.svg" alt="prev" /></button>
+                <button onClick={onNextClick}><img src="https://svgshare.com/i/yL3.svg" alt="next" /></button>
             </div>
-            <button className='custom-button' onClick={onNext}>Войти</button>
+            <motion.div
+              className="box"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <button className='custom-button' onClick={onNext}>Войти</button>
+            </motion.div>
           </div>
         </div>
       </div>

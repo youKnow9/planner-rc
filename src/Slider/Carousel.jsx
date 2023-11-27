@@ -7,16 +7,16 @@ import './Carousel.scss'
 const Carousel = ({ event }) => {
     if (!event.photos || event.photos.length === 0) {
         return null;
-      }
+    }
     
-      const SampleNextArrow = (props) => {
+    const SampleNextArrow = (props) => {
         const { className, style, onClick } = props;
         return (
-           <div
-            className={className + " customNextBtn"}
-            style={{ ...style, display: "block"}}
-            onClick={onClick}
-            />
+            <div
+                className={className + " customNextBtn"}
+                style={{ ...style, display: "block"}}
+                onClick={onClick}
+                />
         );
     }
             
@@ -36,13 +36,13 @@ const Carousel = ({ event }) => {
     let slidesToScroll = photo.length < 3 ? photo.length : 3;
 
     const settings = {
-    dots: true,
-    infinite: true,
-    speed: 0,
-    slidesToShow: slidesToShow,
-    slidesToScroll: slidesToScroll,
-    prevArrow: <SamplePrevArrow />,
-    nextArrow: <SampleNextArrow />
+        dots: true,
+        infinite: true,
+        speed: 0,
+        slidesToShow: slidesToShow,
+        slidesToScroll: slidesToScroll,
+        prevArrow: <SamplePrevArrow />,
+        nextArrow: <SampleNextArrow />
     };
 
     return (
