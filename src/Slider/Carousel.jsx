@@ -32,8 +32,8 @@ const Carousel = ({ event }) => {
     }
 
     const photo = event.photos; 
-    let slidesToShow = photo.length < 3 ? photo.length : 3;
-    let slidesToScroll = photo.length < 3 ? photo.length : 3;
+    let slidesToShow = photo.length < 5 ? photo.length : 5;
+    let slidesToScroll = photo.length < 2 ? photo.length : 2;
 
     const settings = {
         dots: true,

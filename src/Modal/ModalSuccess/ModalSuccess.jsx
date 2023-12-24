@@ -9,6 +9,7 @@ const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }
     const [showPasswords, setShowPasswords] = useState(false);
     const [confirmPassword, setConfirmPassword] = useState('');
     const [passwordsMatch, setPasswordsMatch] = useState(true);
+    const [passwordError, setPasswordError] = useState(false);
 
     useEffect(() => {
       const doPasswordsMatch = password === confirmPassword;
@@ -21,6 +22,11 @@ const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }
 
     const handleLogin = async (e) => {
       try {
+        if (!password) {
+          setPasswordError(true);
+          return;
+        }
+        
         const responseLogin = await api.post('/auth/local', {
           identifier: email,
           password,
@@ -59,6 +65,7 @@ const ModalSuccess = ({ isOpen, onClose, email, onLoginClose, setAuthenticated }
           IconComponent={showPasswords ? Visibility : VisibilityOff}
           onIconClick={togglePasswordVisibility}
           passwordVisibility={showPasswords}
+          error={passwordError} 
         />
         <button className='next-bt' onClick={() => { 
           handleLogin(); 

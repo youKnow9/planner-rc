@@ -24,8 +24,7 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin, setAuthenticated
   };
 
   const isPasswordValid = (password) => {
-    const passwordRegex =
-      /r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,32}$'/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z]).{8,32}$/;
     return passwordRegex.test(password);
   };
 
@@ -40,10 +39,6 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin, setAuthenticated
   };
 
   const handleRegister = async () => {
-    // if (!isFormValid()) {
-    //   setError(true);
-    //   return;
-    // }
     const userData = {
       username: username,
       email: email,
@@ -106,7 +101,7 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin, setAuthenticated
             error={!passwordsMatch}
             errorMessage="Пароли не совпадают"
           />
-          <button className="reg-bt" onClick={handleRegister} >
+          <button className="reg-bt" onClick={handleRegister} disabled={!isFormValid()}>
             Зарегистрироваться
           </button>
         </div>
@@ -116,4 +111,3 @@ const ModalRegisterUser = ({ email, open, onClose, handleLogin, setAuthenticated
 };
 
 export default ModalRegisterUser;
-// disabled={!isFormValid()}
